@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  dragonfly:
+    image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
+    ulimits:
+      memlock: -1
+    ports:
+      - "6379:6379"
+    command: --cache_mode=true
+    volumes:
+      - dragonflydata:/data
+  redis-stack:
+    image: redislabs/redisinsight
+    ports:
+      - '8001:8001'
+volumes:
+  dragonflydata:
