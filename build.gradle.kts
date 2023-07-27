@@ -1,30 +1,50 @@
-java.sourceCompatibility = JavaVersion.VERSION_17
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.10"
-    kotlin("plugin.spring") version "1.8.10"
+    id(Plugins.spring_boot) version Plugins.Versions.spring_boot
+    id(Plugins.spring_dependency_management) version Plugins.Versions.spring_dependency_management apply false
 
-    id("org.springframework.boot") version "3.0.4" apply false
-    id("io.spring.dependency-management") version "1.1.0" apply false
+    id(Plugins.ktlint) version Plugins.Versions.ktlint
+    kotlin(Plugins.jvm) version Plugins.Versions.kotlin
+    kotlin(Plugins.plugin_spring) version Plugins.Versions.kotlin
+    kotlin(Plugins.plugin_jpa) version Plugins.Versions.kotlin
+}
+
+group = "org.github.laziness"
+version = "1.0-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+tasks.jar {
+    enabled = true
+}
+
+tasks.bootJar {
+    enabled = false
 }
 
 allprojects {
-    group = "org.github.laziness"
-    version = "1.0-SNAPSHOT"
-
     repositories {
         mavenCentral()
     }
 }
 
 subprojects {
-    apply(plugin = "java")
-    apply(plugin = "kotlin")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply {
+        plugin(Plugins.java_library)
+        plugin(Plugins.kotlin)
+        plugin(Plugins.kotlin_jpa)
+        plugin(Plugins.kotlin_spring)
+        plugin(Plugins.spring_boot)
+        plugin(Plugins.spring_dependency_management)
+        plugin(Plugins.java_test_fixtures)
+    }
 
-    apply(plugin = "kotlin-spring")
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
 
     tasks.withType<Test> {
         useJUnitPlatform()
