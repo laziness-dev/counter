@@ -39,3 +39,12 @@ object Dependencies {
         const val junit_bom = "5.9.1"
     }
 }
+
+object Modules {
+    const val api = "api"
+    const val counter_core = "counter-core"
+    const val counter_get_api = "counter-get-api"
+    const val counter_hit_api = "counter-hit-api"
+    const val counter_hit_consumer = "counter-hit-consumer"
+    const val counter_cdc = "counter-cdc"
+}
